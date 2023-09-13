@@ -1,127 +1,141 @@
-import { Container } from "react-bootstrap"
-import { useState } from "react";
+import {Container} from 'react-bootstrap';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
-import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
-import constantErrorMessage from "./constant/constantErrorMessage";
+import { useState } from "react";
+import Button from 'react-bootstrap/Button';
+import constant from '../constant/constantErrorMessage';
+function FullUservaledation(){
 
-function App() {
-   const [userData, setUserData] = useState({
-    "emailId": '',
-    "password": '',
-    "firstName": '',
-    "lastName": '',
-    "mobile": '',
-    "city" : '',
-    "dob": '',
-    "gender" : '',
-    "fullAdress" : '',
-    "file" : '',
-    "country" : ''
-  })
-  const [errorMessages, setErrorMessages] = useState({
-    "firstName": '',
-    "emailid": '',
-    "password": '',
-    "gender" : '',
-    "mobile": '',
-    "dob" : ''
-  });
-  const errors = constantErrorMessage.appValidation
-// form submit karne ke bad ye value ko save karne ke lye 
-const loginUser=(e)=>{
-    e.preventDefault();
+    const [userData, setUserData] = useState({
+        "emailId": '',
+        "password": '',
+        "firstName": '',
+        "lastName": '',
+        "mobile": '',
+        "city" : '',
+        "dob": '',
+        "gender" : '',
+        "fullAdress" : '',
+        "file" : '',
+        "country" : ''
+    })
+    const [errorMessages, setErrorMessages] = useState({
+      "emailId": '',
+      "password": '',
+      "firstName": '',
+      "lastName": '',
+      "mobile": '',
+      "city" : '',
+      "dob": '',
+      "gender" : '',
+      "fullAdress" : '',
+      "file" : '',
+      "country" : ''
+    });
+    const errors = constant.userError;
 
-
-    console.log("data on submit",userData);
+    const loginUser=(e)=>{
+        e.preventDefault();
+        console.log("data on submit",userData);
     let error = 0;
     let errorCopy = {...errorMessages};
-    if(userData.firstName === ''){
-        errorCopy.firstName = errors.firstName;
-        error = 1;
-    }
-    if(userData.emailid === ''){
-        errorCopy.emailid = errors.emailid;
+    if(userData.emailId === ''){
+        errorCopy.emailId = errors.emailId;
         error = 1;
     }
     if(userData.password === ''){
         errorCopy.password = errors.password;
         error = 1;
     }
-    if(userData.gender === ''){
-        errorCopy.gender = errors.gender;
+    if(userData.firstName === ''){
+        errorCopy.firstName = errors.firstName;
         error = 1;
-
+    }
+    if(userData.lastName === ''){
+        errorCopy.lastName = errors.lastName;
+        error = 1;
     }
     if(userData.mobile === ''){
         errorCopy.mobile = errors.mobile;
+        error = 1;
+    }
+    if(userData.city === ''){
+        errorCopy.city = errors.city;
         error = 1;
     }
     if(userData.dob === ''){
         errorCopy.dob = errors.dob;
         error = 1;
     }
+    if(userData.gender === ''){
+        errorCopy.gender = errors.gender;
+        error = 1;
+    }
+    if(userData.fullAdress === ''){
+        errorCopy.fullAdress = errors.fullAdress;
+        error = 1;
+    }
+    if(userData.file === ''){
+        errorCopy.file = errors.file;
+        error = 1;
+    }
+    if(userData.country === ''){
+        errorCopy.country = errors.country;
+        error = 1;
+    }
+    
     setErrorMessages(errorCopy);
-    if(error === 1){  // code has any validation error
-      return  // not allow to execute further stop here
+    if(error === 1){  
+      return  
     }
     alert("all data are correct");
-    /// api call to save data
+    }
+    const changeText=(e)=>{
+        let value =e.target.value;
+        let name =e.target.name;
+        let cloneError = {...errorMessages};
+        if(cloneError.hasOwnProperty(name)){
+            if(value  === ''){ 
+                let errorMsg = errors[name];
+                cloneError[name] = errorMsg
+                setErrorMessages(cloneError)
+            }else{ 
+                cloneError[name] = ""
+                setErrorMessages(cloneError)
 
-}
-//value ko change karne ke lye Changetext lete hai
-  const changeText=(e)=>{
-      let value =e.target.value;
-      let name =e.target.name;
-        ///// to update error message //////
-      let cloneError = {...errorMessages};
-      if(cloneError.hasOwnProperty(name)){//do we need to validate given field with this name
-        if(value  === ''){ // to show error message
-            let errorMsg = errors[name];
-            cloneError[name] = errorMsg
-            setErrorMessages(cloneError)
-        }else{ // to remove error message as value been added
-            cloneError[name] = ""
-            setErrorMessages(cloneError)
-
+            }
         }
-      }
-      //// to update error message end /////
-
-      //// to update data which we get from form into state footerData///
-      setUserData(current =>{
-          const cloneData = {...current}
-          if(cloneData.hasOwnProperty(name))
-          {
-            cloneData[name] = value
-          }
-          return cloneData;
+        setUserData(current =>{
+            const cloneData = {...current}
+            if(cloneData.hasOwnProperty(name))
+            {
+              cloneData[name] = value
+            }
+            return cloneData;
         }
-      )
-      //// to update data which we get from form into state footerData end///
-
+        )
         console.log(userData);
-  }
-  //// function changeText end ///////////////
- 
-
-  return (
-      <>
-      <Container  className="border border-dark rounded">
-          <form  onSubmit={loginUser}>
-            <h1 className="text-center">footer form Example<hr/></h1>
-            <Row className="margintop10">
+    }
+    return(
+        <>
+        <Container>
+            <form onSubmit={loginUser}>
+                <h1>FullUser form</h1>
+                <Row className="margintop10">
               <Col>
-                <label htmlFor="FirstName"><b>First Name <span className="text-danger"> * </span></b></label>
+                <label htmlFor="firstName"><b>First Name <span className="text-danger"> * </span></b></label>
                 <input type="text"  className="form-control" placeholder="Enter First Name " name="firstName" onChange={changeText} />
                 <Form.Text className="text-danger">
                   {errorMessages["firstName"]}
                 </Form.Text>
               </Col>
               <Col>
-                <label htmlFor="LastName"><b>Last Name</b></label>
+                <label htmlFor="LastName"><b>Last Name <span className="text-danger"> * </span></b></label>
                 <input type="text"  className="form-control" placeholder="Enter Last Name " name="lastName" onChange={changeText} />
+                <Form.Text className="text-danger">
+                  {errorMessages["lastName"]}
+                </Form.Text>
               </Col>
           </Row>
         
@@ -130,14 +144,14 @@ const loginUser=(e)=>{
             <label htmlFor="emailId"><b>Email <span className="text-danger"> * </span></b></label>
             <input type="text" placeholder="Enter Email " name="emailId" onChange={changeText}  className="form-control"/>
             <Form.Text className="text-danger">
-                  {errorMessages["emailId"]}
+                {errorMessages["emailId"]}
             </Form.Text>
           </Col>
           <Col>
             <label htmlFor="password"><b>Password <span className="text-danger"> * </span></b></label>
             <input type="password" placeholder="Password " name="password" onChange={changeText}  className="form-control"/>
             <Form.Text className="text-danger">
-                  {errorMessages["password"]}
+                {errorMessages["password"]}
             </Form.Text>
           </Col>
           </Row>
@@ -149,11 +163,11 @@ const loginUser=(e)=>{
             <label htmlFor="mobile"><b>Mobile <span className="text-danger"> * </span></b></label>
             <input type="number" placeholder="Enter number " name="mobile" onChange={changeText}  className="form-control"/>
             <Form.Text className="text-danger">
-                  {errorMessages["mobile"]}
+                {errorMessages["mobile"]}
             </Form.Text>
           </Col>
           <Col>
-            <label htmlFor="city"><b>SELECT CITY</b></label>
+            <label htmlFor="city"><b>SELECT CITY <span className="text-danger"> * </span></b></label>
                 <select name="city" onChange={changeText} onSelect={changeText}  className="form-control">
                   <option>SELECT CITY</option>
                   <option value="KOLKATA">KOLKATA</option>
@@ -162,6 +176,9 @@ const loginUser=(e)=>{
                   <option value="Goa">Goa</option>
                   <option value="Bihar">Bihar</option>
                 </select>
+                <Form.Text className="text-danger">
+                  {errorMessages["city"]}
+                </Form.Text>
           </Col>
           </Row>
        
@@ -171,7 +188,7 @@ const loginUser=(e)=>{
                 <Form.Control type="date" placeholder=" Type DOB" name="dob" onChange={changeText}  className="form-control"/>
                 <Form.Text className="text-danger">
                   {errorMessages["dob"]}
-            </Form.Text>
+                </Form.Text>
           </Col>
           <Col>
                 <label htmlFor="Gender"><b>Gender <span className="text-danger"> * </span></b></label>
@@ -195,34 +212,43 @@ const loginUser=(e)=>{
                         onChange={changeText}/>
                   </Form.Text>
                   <Form.Text className="text-danger">
-                    <br/>{errorMessages["gender"]}
+                       {errorMessages["gender"]}
                   </Form.Text>
             </Col>
             </Row>
            
             <Row className="margintop10">
             <Col>
-                  <Form.Label><b>Upload file</b></Form.Label>
+                  <Form.Label><b>Upload file <span className="text-danger"> * </span></b></Form.Label>
                   <Form.Control type="file" multiple  name="file" onChange={changeText}  className="form-control"/>
+                  <Form.Text className="text-danger">
+                    {errorMessages["file"]}
+                  </Form.Text>
             </Col>
             <Col>
             
-                  <label htmlFor="country"><b>Citizenship</b></label>
+                  <label htmlFor="country"><b>Citizenship <span className="text-danger"> * </span></b></label>
                   <select name="country" onChange={changeText} onSelect={changeText}  className="form-control">
-                        <option>COUNTRY </option>
+                        <option value="">COUNTRY </option>
                         <option value="India">India</option>
                         <option value="Pakistan">Pakistan</option>
                         <option value="Dubai">Dubai</option>
                         <option value="China">China</option>
                         <option value="UAE">UAE</option>
                   </select>
+                  <Form.Text className="text-danger">
+                    {errorMessages["country"]}
+                  </Form.Text>
             </Col>
             </Row>    
          
             <Row className="margintop10">
             <Col md={6}>
-                  <label htmlFor="Adress"><b>Full Adress</b></label><br/>
+                  <label htmlFor="Adress"><b>Full Adress <span className="text-danger"> * </span></b></label><br/>
                   <textarea className="form-control"   name="fullAdress"  style={{ height: '100px' }} onChange={changeText} />
+                  <Form.Text className="text-danger">
+                  {errorMessages["fullAdress"]}
+            </Form.Text>
             </Col>
             </Row>  
                  
@@ -231,11 +257,10 @@ const loginUser=(e)=>{
                   <Button variant="success" className="form-control heght30 mrgintop30" type="submit">Register</Button>
                   </Col>
             </Row>
-          </form>
-          
+            </form>
         </Container>
-      </>
-  );
-}
+        </>
+    )
 
-export default App;
+}
+export default FullUservaledation;
