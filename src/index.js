@@ -14,7 +14,7 @@ import Dashboard from './Components/Dashboard';
 export default function AppRoot() {
   return (
     <>
-      <BrowserRouter>
+      <BrowserRouter  future={{ v7_startTransition: true }}>
         <Routes>
             <Route path="/" element={<Menu />}>
             <Route index element={<App />} />
